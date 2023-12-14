@@ -70,6 +70,12 @@ class QueryBuild
         return $this;
     }
 
+    public function removeAll(): self
+    {
+        $this->query_as_array = [];
+        return $this;
+    }
+
     /**
      * array_key_exists
      */
