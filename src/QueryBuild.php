@@ -113,6 +113,11 @@ class QueryBuild
         return http_build_query($this->query_as_array);
     }
 
+    public function getQueryUrlDecode(?bool $null_as_empty_string = null): string
+    {
+        return urldecode($this->getQuery($null_as_empty_string));
+    }
+
     /**
      * тип null в виде строки ""
      */
