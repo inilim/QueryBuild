@@ -91,7 +91,7 @@ class QueryBuild
     {
         $null_as_empty_string ??= $this->null_as_empty_string;
 
-        if ($null_as_empty_string) return $this->nullToString($this->query_as_array);
+        if ($null_as_empty_string) return $this->nullToEmptyString($this->query_as_array);
 
         return $this->query_as_array;
     }
@@ -101,7 +101,7 @@ class QueryBuild
         $null_as_empty_string ??= $this->null_as_empty_string;
 
         if ($null_as_empty_string) return http_build_query(
-            $this->nullToString($this->query_as_array)
+            $this->nullToEmptyString($this->query_as_array)
         );
 
         return http_build_query($this->query_as_array);
@@ -116,7 +116,7 @@ class QueryBuild
         return $this;
     }
 
-    protected function nullToString(array $array): array
+    protected function nullToEmptyString(array $array): array
     {
         array_walk_recursive($array, function (&$value) {
             if (is_null($value)) $value = '';
