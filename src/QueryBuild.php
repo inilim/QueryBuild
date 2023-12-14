@@ -39,6 +39,7 @@ class QueryBuild
 
     /**
      * @param mixed $value
+     * @throws EmptyKeyException
      */
     public function addParam(string|int|float $key, $value): self
     {
