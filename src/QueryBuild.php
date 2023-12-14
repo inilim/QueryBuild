@@ -10,6 +10,9 @@ use Inilim\QueryBuild\Exception\EmptyKeyException;
 class QueryBuild
 {
     protected string $query;
+    /**
+     * @var mixed[]|array{}
+     */
     protected array $query_as_array;
     protected bool $null_as_empty_string = false;
 
@@ -93,6 +96,9 @@ class QueryBuild
         return $this->query_as_array[$key] ?? null;
     }
 
+    /**
+     * @return mixed[]|array{}
+     */
     public function getQueryAsArray(?bool $null_as_empty_string = null): array
     {
         $null_as_empty_string ??= $this->null_as_empty_string;
@@ -127,6 +133,10 @@ class QueryBuild
         return $this;
     }
 
+    /**
+     * @param mixed[]|array{} $array
+     * @return mixed[]|array{}
+     */
     protected function nullToEmptyString(array $array): array
     {
         array_walk_recursive($array, function (&$value) {
