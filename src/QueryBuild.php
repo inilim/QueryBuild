@@ -2,6 +2,7 @@
 
 namespace Inilim\QueryBuild;
 
+use Inilim\Array\Array_;
 // ------------------------------------------------------------------
 // Exception
 // ------------------------------------------------------------------
@@ -15,9 +16,11 @@ class QueryBuild
      */
     protected array $query_as_array;
     protected bool $null_as_empty_string = false;
+    protected Array_ $array;
 
     public function __construct(?string $url_or_query = null, ?bool $null_as_empty_string = null)
     {
+        $this->array = new Array_;
         if (is_bool($null_as_empty_string)) $this->null_as_empty_string = $null_as_empty_string;
 
         if (is_null($url_or_query)) $result = '';
