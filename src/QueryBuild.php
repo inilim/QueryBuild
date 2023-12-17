@@ -53,6 +53,17 @@ class QueryBuild
     }
 
     /**
+     * @param mixed $value
+     * @throws EmptyKeyException
+     */
+    public function addParamDot(string $path, $value): self
+    {
+        if ($path === '') throw new EmptyKeyException;
+        $this->array->set($this->query_as_array, $path, $value);
+        return $this;
+    }
+
+    /**
      * @param array<int|string,mixed> $params
      */
     public function addParams(array $params): self
@@ -64,15 +75,39 @@ class QueryBuild
     }
 
     /**
+     * @param array<string,mixed> $params
+     */
+    public function addParamsDot(array $params): self
+    {
+        foreach ($params as $path => $value) {
+            $this->addParamDot($path, $value);
+        }
+        return $this;
+    }
+
+    /**
      * @param (string|int|float)[]|string|int|float $keys
      */
     public function removeParams(array|string|int|float $keys): self
     {
-        if (!is_array($keys)) $keys = [strval($keys)];
+        $keys = $this->array->wrap($keys);
         foreach ($keys as $key) {
             $key = strval($key);
             // if ($key === '') throw new EmptyKeyException;
             unset($this->query_as_array[$key]);
+        }
+        return $this;
+    }
+
+    /**
+     * @param string[]|string $paths
+     */
+    public function removeParamsDot(array|string $paths): self
+    {
+        $paths = $this->array->wrap($paths);
+        foreach ($paths as $path) {
+            $path = strval($path);
+            $this->array->forget($this->query_as_array, $path);
         }
         return $this;
     }
