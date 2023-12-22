@@ -128,11 +128,11 @@ class QueryBuild
         return array_key_exists($key, $this->query_as_array);
     }
 
-    public function getParam(string|int|float $key): mixed
+    public function getParam(string|int|float $key, mixed $default = null): mixed
     {
         $key = strval($key);
         // if ($key === '') throw new EmptyKeyException;
-        return $this->query_as_array[$key] ?? null;
+        return $this->query_as_array[$key] ?? $default;
     }
 
     /**
