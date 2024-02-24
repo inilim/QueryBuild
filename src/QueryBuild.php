@@ -21,21 +21,21 @@ class QueryBuild
     public function __construct(?string $url_or_query = null, ?bool $null_as_empty_string = null)
     {
         $this->array = new Array_;
-        if (is_bool($null_as_empty_string)) $this->null_as_empty_string = $null_as_empty_string;
+        if (\is_bool($null_as_empty_string)) $this->null_as_empty_string = $null_as_empty_string;
 
-        if (is_null($url_or_query)) $result = '';
+        if ($url_or_query === null) $result = '';
         else {
-            $result = parse_url($url_or_query);
+            $result = \parse_url($url_or_query);
             $result = $result['query'] ?? $result['path'] ?? '';
         }
 
         if ($result === '') $this->query = '';
         // исключаем query типа "/path/path/..."
-        elseif (str_contains($result, '/')) $this->query = '';
+        elseif (\str_contains($result, '/')) $this->query = '';
         else $this->query = $result;
 
         if ($this->query === '') $output = [];
-        else parse_str($this->query, $output);
+        else \parse_str($this->query, $output);
 
         $this->query_as_array = $output;
     }
@@ -46,7 +46,7 @@ class QueryBuild
      */
     public function addParam(string|int|float $key, $value): self
     {
-        $key = strval($key);
+        $key = \strval($key);
         if ($key === '') throw new EmptyKeyException;
         $this->query_as_array[$key] = $value;
         return $this;
@@ -92,7 +92,7 @@ class QueryBuild
     {
         $keys = $this->array->wrap($keys);
         foreach ($keys as $key) {
-            $key = strval($key);
+            $key = \strval($key);
             // if ($key === '') throw new EmptyKeyException;
             unset($this->query_as_array[$key]);
         }
@@ -106,7 +106,7 @@ class QueryBuild
     {
         $paths = $this->array->wrap($paths);
         foreach ($paths as $path) {
-            $path = strval($path);
+            $path = \strval($path);
             $this->array->forget($this->query_as_array, $path);
         }
         return $this;
@@ -123,14 +123,14 @@ class QueryBuild
      */
     public function hasParam(string|int|float $key): bool
     {
-        $key = strval($key);
+        $key = \strval($key);
         // if ($key === '') throw new EmptyKeyException;
-        return array_key_exists($key, $this->query_as_array);
+        return \array_key_exists($key, $this->query_as_array);
     }
 
     public function getParam(string|int|float $key, mixed $default = null): mixed
     {
-        $key = strval($key);
+        $key = \strval($key);
         // if ($key === '') throw new EmptyKeyException;
         return $this->query_as_array[$key] ?? $default;
     }
@@ -155,12 +155,12 @@ class QueryBuild
             $this->nullToEmptyString($this->query_as_array)
         );
 
-        return http_build_query($this->query_as_array);
+        return \http_build_query($this->query_as_array);
     }
 
     public function getQueryUrlDecode(?bool $null_as_empty_string = null): string
     {
-        return urldecode($this->getQuery($null_as_empty_string));
+        return \urldecode($this->getQuery($null_as_empty_string));
     }
 
     /**
@@ -178,8 +178,8 @@ class QueryBuild
      */
     protected function nullToEmptyString(array $array): array
     {
-        array_walk_recursive($array, function (&$value) {
-            if (is_null($value)) $value = '';
+        \array_walk_recursive($array, function (&$value) {
+            if ($value === null) $value = '';
         });
 
         return $array;
