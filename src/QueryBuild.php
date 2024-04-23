@@ -52,6 +52,14 @@ class QueryBuild
         return $this;
     }
 
+    public function getCountParams(bool $recursive = false): int
+    {
+        if ($recursive) $p = \COUNT_RECURSIVE;
+        else $p = \COUNT_NORMAL;
+
+        return \sizeof($this->query_as_array, $p);
+    }
+
     /**
      * @param mixed $value
      * @throws EmptyKeyException
